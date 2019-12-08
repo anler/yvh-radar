@@ -10,4 +10,13 @@ edition = "2018"
 members = ["yvh"]
 
 [dependencies]
-yvh = { path = "./yvh" }
+actix-web = "2.0.0-alpha.3"
+actix-rt = "1.0.0-alpha.3"
+
+yvh = { path = "./yvh", features = ["with-serde"] }
+env_logger = "0.7.1"
+futures = "0.3.1"
+serde = "1.0.103"
+serde_json = "1.0.44"
+serde_derive = "1.0.103"
+json = "0.12.0"

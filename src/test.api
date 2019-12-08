@@ -1,0 +1,1437 @@
+# avoid-mech
+
+POST http://localhost:8888/
+Content-Type: application/json
+
+{
+  "scan": [
+    {
+      "enemies": {
+        "number": 10,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 40,
+        "x": 0
+      }
+    },
+    {
+      "enemies": {
+        "number": 1,
+        "type": "mech"
+      },
+      "allies": 5,
+      "coordinates": {
+        "y": 80,
+        "x": 0
+      }
+    }
+  ],
+  "protocols": [
+    "avoid-mech"
+  ]
+}
+
+# closest-enemies | expected: {"x":10,"y":30}
+POST http://localhost:8888/
+Content-Type: application/json
+
+{
+  "scan": [
+    {
+      "coordinates": {
+        "x": 5,
+        "y": 35
+      },
+      "enemies": {
+        "type": "soldier",
+        "number": 10
+      }
+    },
+    {
+      "coordinates": {
+        "x": 10,
+        "y": 30
+      },
+      "enemies": {
+        "type": "soldier",
+        "number": 20
+      }
+    }
+  ],
+  "protocols": [
+    "closest-enemies"
+  ]
+}
+
+# furthest-enemies and avoid-mech | expected: {"x":91,"y":30}
+POST http://localhost:8888/
+Content-Type: application/json
+
+{
+  "scan": [
+    {
+      "enemies": {
+        "number": 1,
+        "type": "mech"
+      },
+      "coordinates": {
+        "y": 13,
+        "x": 89
+      }
+    },
+    {
+      "enemies": {
+        "number": 10,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 35,
+        "x": 11
+      }
+    },
+    {
+      "enemies": {
+        "number": 10,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 49,
+        "x": 19
+      }
+    },
+    {
+      "enemies": {
+        "number": 30,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 21,
+        "x": 38
+      }
+    },
+    {
+      "enemies": {
+        "number": 30,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 39,
+        "x": 10
+      }
+    },
+    {
+      "enemies": {
+        "number": 15,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 38,
+        "x": 13
+      }
+    },
+    {
+      "enemies": {
+        "number": 60,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 15,
+        "x": 13
+      }
+    },
+    {
+      "enemies": {
+        "number": 40,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 19,
+        "x": 30
+      }
+    },
+    {
+      "enemies": {
+        "number": 20,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 11,
+        "x": 30
+      }
+    },
+    {
+      "enemies": {
+        "number": 80,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 19,
+        "x": 15
+      }
+    },
+    {
+      "enemies": {
+        "number": 10,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 15,
+        "x": 22
+      }
+    },
+    {
+      "enemies": {
+        "number": 10,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 19,
+        "x": 10
+      }
+    },
+    {
+      "enemies": {
+        "number": 10,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 11,
+        "x": 94
+      }
+    },
+    {
+      "enemies": {
+        "number": 30,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 19,
+        "x": 10
+      }
+    },
+    {
+      "enemies": {
+        "number": 30,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 18,
+        "x": 90
+      }
+    },
+    {
+      "enemies": {
+        "number": 15,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 51,
+        "x": 80
+      }
+    },
+    {
+      "enemies": {
+        "number": 60,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 91,
+        "x": 70
+      }
+    },
+    {
+      "enemies": {
+        "number": 40,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 11,
+        "x": 30
+      }
+    },
+    {
+      "enemies": {
+        "number": 20,
+        "type": "mech"
+      },
+      "coordinates": {
+        "y": 95,
+        "x": 30
+      }
+    },
+    {
+      "enemies": {
+        "number": 80,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 89,
+        "x": 1
+      }
+    },
+    {
+      "enemies": {
+        "number": 10,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 11,
+        "x": 3
+      }
+    },
+    {
+      "enemies": {
+        "number": 10,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 19,
+        "x": 54
+      }
+    },
+    {
+      "enemies": {
+        "number": 10,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 38,
+        "x": 22
+      }
+    },
+    {
+      "enemies": {
+        "number": 30,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 10,
+        "x": 3
+      }
+    },
+    {
+      "enemies": {
+        "number": 30,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 13,
+        "x": 43
+      }
+    },
+    {
+      "enemies": {
+        "number": 15,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 13,
+        "x": 51
+      }
+    },
+    {
+      "enemies": {
+        "number": 60,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 30,
+        "x": 91
+      }
+    },
+    {
+      "enemies": {
+        "number": 40,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 30,
+        "x": 11
+      }
+    },
+    {
+      "enemies": {
+        "number": 20,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 15,
+        "x": 91
+      }
+    },
+    {
+      "enemies": {
+        "number": 80,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 22,
+        "x": 51
+      }
+    },
+    {
+      "enemies": {
+        "number": 10,
+        "type": "mech"
+      },
+      "coordinates": {
+        "y": 10,
+        "x": 91
+      }
+    },
+    {
+      "enemies": {
+        "number": 10,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 84,
+        "x": 11
+      }
+    },
+    {
+      "enemies": {
+        "number": 10,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 65,
+        "x": 91
+      }
+    },
+    {
+      "enemies": {
+        "number": 30,
+        "type": "mech"
+      },
+      "coordinates": {
+        "y": 53,
+        "x": 81
+      }
+    },
+    {
+      "enemies": {
+        "number": 30,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 70,
+        "x": 15
+      }
+    },
+    {
+      "enemies": {
+        "number": 15,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 83,
+        "x": 19
+      }
+    },
+    {
+      "enemies": {
+        "number": 60,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 46,
+        "x": 11
+      }
+    },
+    {
+      "enemies": {
+        "number": 40,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 26,
+        "x": 59
+      }
+    },
+    {
+      "enemies": {
+        "number": 20,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "y": 57,
+        "x": 98
+      }
+    },
+    {
+      "enemies": {
+        "number": 80,
+        "type": "mech"
+      },
+      "coordinates": {
+        "y": 58,
+        "x": 11
+      }
+    },
+    {
+      "enemies": {
+        "number": 10,
+        "type": "mech"
+      },
+      "coordinates": {
+        "y": 39,
+        "x": 91
+      }
+    },
+    {
+      "enemies": {
+        "number": 10,
+        "type": "mech"
+      },
+      "coordinates": {
+        "y": 37,
+        "x": 83
+      }
+    },
+    {
+      "enemies": {
+        "number": 1,
+        "type": "mech"
+      },
+      "coordinates": {
+        "y": 11,
+        "x": 0
+      }
+    }
+  ],
+  "protocols": [
+    "furthest-enemies",
+    "avoid-mech"
+  ]
+}
+
+# closest-enemies and prioritize-mech | expected: {"x":0,"y":11}
+POST http://localhost:8888/
+Content-Type: application/json
+
+{
+  "scan": [
+    {
+      "coordinates": {
+        "y": 13,
+        "x": 89
+      },
+      "enemies": {
+        "type": "mech",
+        "number": 1
+      }
+    },
+    {
+      "coordinates": {
+        "x": 11,
+        "y": 35
+      },
+      "allies": 3,
+      "enemies": {
+        "number": 10,
+        "type": "soldier"
+      }
+    },
+    {
+      "coordinates": {
+        "x": 19,
+        "y": 49
+      },
+      "enemies": {
+        "number": 10,
+        "type": "soldier"
+      }
+    },
+    {
+      "coordinates": {
+        "x": 38,
+        "y": 21
+      },
+      "allies": 5,
+      "enemies": {
+        "number": 30,
+        "type": "soldier"
+      }
+    },
+    {
+      "coordinates": {
+        "y": 39,
+        "x": 10
+      },
+      "allies": 8,
+      "enemies": {
+        "type": "soldier",
+        "number": 30
+      }
+    },
+    {
+      "coordinates": {
+        "y": 38,
+        "x": 13
+      },
+      "enemies": {
+        "number": 15,
+        "type": "soldier"
+      }
+    },
+    {
+      "coordinates": {
+        "y": 15,
+        "x": 13
+      },
+      "enemies": {
+        "type": "soldier",
+        "number": 60
+      }
+    },
+    {
+      "coordinates": {
+        "x": 30,
+        "y": 19
+      },
+      "enemies": {
+        "type": "soldier",
+        "number": 40
+      }
+    },
+    {
+      "enemies": {
+        "type": "soldier",
+        "number": 20
+      },
+      "coordinates": {
+        "y": 11,
+        "x": 30
+      }
+    },
+    {
+      "enemies": {
+        "type": "soldier",
+        "number": 80
+      },
+      "allies": 11,
+      "coordinates": {
+        "y": 19,
+        "x": 15
+      }
+    },
+    {
+      "enemies": {
+        "type": "soldier",
+        "number": 10
+      },
+      "allies": 13,
+      "coordinates": {
+        "y": 15,
+        "x": 22
+      }
+    },
+    {
+      "enemies": {
+        "number": 10,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "x": 10,
+        "y": 19
+      }
+    },
+    {
+      "coordinates": {
+        "y": 11,
+        "x": 94
+      },
+      "allies": 15,
+      "enemies": {
+        "number": 10,
+        "type": "soldier"
+      }
+    },
+    {
+      "coordinates": {
+        "y": 19,
+        "x": 10
+      },
+      "enemies": {
+        "type": "soldier",
+        "number": 30
+      }
+    },
+    {
+      "coordinates": {
+        "y": 18,
+        "x": 90
+      },
+      "allies": 16,
+      "enemies": {
+        "number": 30,
+        "type": "soldier"
+      }
+    },
+    {
+      "coordinates": {
+        "x": 80,
+        "y": 51
+      },
+      "allies": 5,
+      "enemies": {
+        "type": "soldier",
+        "number": 15
+      }
+    },
+    {
+      "coordinates": {
+        "x": 70,
+        "y": 91
+      },
+      "allies": 5,
+      "enemies": {
+        "number": 60,
+        "type": "soldier"
+      }
+    },
+    {
+      "coordinates": {
+        "x": 30,
+        "y": 11
+      },
+      "enemies": {
+        "number": 40,
+        "type": "soldier"
+      }
+    },
+    {
+      "coordinates": {
+        "x": 30,
+        "y": 95
+      },
+      "enemies": {
+        "number": 20,
+        "type": "mech"
+      }
+    },
+    {
+      "coordinates": {
+        "y": 89,
+        "x": 1
+      },
+      "allies": 8,
+      "enemies": {
+        "number": 80,
+        "type": "soldier"
+      }
+    },
+    {
+      "coordinates": {
+        "y": 11,
+        "x": 3
+      },
+      "enemies": {
+        "type": "soldier",
+        "number": 10
+      }
+    },
+    {
+      "coordinates": {
+        "y": 19,
+        "x": 54
+      },
+      "enemies": {
+        "type": "soldier",
+        "number": 10
+      }
+    },
+    {
+      "coordinates": {
+        "y": 38,
+        "x": 22
+      },
+      "enemies": {
+        "number": 10,
+        "type": "soldier"
+      }
+    },
+    {
+      "coordinates": {
+        "x": 3,
+        "y": 10
+      },
+      "allies": 10,
+      "enemies": {
+        "type": "soldier",
+        "number": 30
+      }
+    },
+    {
+      "enemies": {
+        "type": "soldier",
+        "number": 30
+      },
+      "coordinates": {
+        "y": 13,
+        "x": 43
+      }
+    },
+    {
+      "coordinates": {
+        "y": 13,
+        "x": 51
+      },
+      "allies": 10,
+      "enemies": {
+        "type": "soldier",
+        "number": 15
+      }
+    },
+    {
+      "enemies": {
+        "number": 60,
+        "type": "soldier"
+      },
+      "allies": 10,
+      "coordinates": {
+        "x": 91,
+        "y": 30
+      }
+    },
+    {
+      "enemies": {
+        "type": "soldier",
+        "number": 40
+      },
+      "coordinates": {
+        "x": 11,
+        "y": 30
+      }
+    },
+    {
+      "coordinates": {
+        "y": 15,
+        "x": 91
+      },
+      "enemies": {
+        "number": 20,
+        "type": "soldier"
+      }
+    },
+    {
+      "coordinates": {
+        "x": 51,
+        "y": 22
+      },
+      "allies": 10,
+      "enemies": {
+        "type": "soldier",
+        "number": 80
+      }
+    },
+    {
+      "enemies": {
+        "type": "mech",
+        "number": 10
+      },
+      "coordinates": {
+        "y": 10,
+        "x": 91
+      }
+    },
+    {
+      "coordinates": {
+        "y": 84,
+        "x": 11
+      },
+      "enemies": {
+        "number": 10,
+        "type": "soldier"
+      }
+    },
+    {
+      "coordinates": {
+        "y": 65,
+        "x": 91
+      },
+      "allies": 10,
+      "enemies": {
+        "type": "soldier",
+        "number": 10
+      }
+    },
+    {
+      "coordinates": {
+        "x": 81,
+        "y": 53
+      },
+      "allies": 3,
+      "enemies": {
+        "type": "mech",
+        "number": 30
+      }
+    },
+    {
+      "enemies": {
+        "number": 30,
+        "type": "soldier"
+      },
+      "allies": 4,
+      "coordinates": {
+        "x": 15,
+        "y": 70
+      }
+    },
+    {
+      "coordinates": {
+        "x": 19,
+        "y": 83
+      },
+      "allies": 4,
+      "enemies": {
+        "number": 15,
+        "type": "soldier"
+      }
+    },
+    {
+      "coordinates": {
+        "x": 11,
+        "y": 46
+      },
+      "enemies": {
+        "type": "soldier",
+        "number": 60
+      }
+    },
+    {
+      "enemies": {
+        "number": 40,
+        "type": "soldier"
+      },
+      "allies": 6,
+      "coordinates": {
+        "x": 59,
+        "y": 26
+      }
+    },
+    {
+      "coordinates": {
+        "y": 57,
+        "x": 98
+      },
+      "allies": 6,
+      "enemies": {
+        "type": "soldier",
+        "number": 20
+      }
+    },
+    {
+      "coordinates": {
+        "y": 58,
+        "x": 11
+      },
+      "enemies": {
+        "type": "mech",
+        "number": 80
+      }
+    },
+    {
+      "coordinates": {
+        "y": 39,
+        "x": 91
+      },
+      "enemies": {
+        "type": "mech",
+        "number": 10
+      }
+    },
+    {
+      "enemies": {
+        "number": 10,
+        "type": "mech"
+      },
+      "coordinates": {
+        "y": 37,
+        "x": 83
+      }
+    },
+    {
+      "coordinates": {
+        "x": 0,
+        "y": 11
+      },
+      "allies": 6,
+      "enemies": {
+        "number": 1,
+        "type": "mech"
+      }
+    }
+  ],
+  "protocols": [
+    "closest-enemies",
+    "prioritize-mech"
+  ]
+}
+
+# closest-enemies and prioritize-mech and avoid-crossfire | expected: {"x": 11, "y": "38"}
+POST http://localhost:8888/radar
+Content-Type: application/json
+
+{
+  "scan": [
+    {
+      "coordinates": {
+        "y": 13,
+        "x": 89
+      },
+      "enemies": {
+        "type": "mech",
+        "number": 1
+      }
+    },
+    {
+      "coordinates": {
+        "x": 11,
+        "y": 35
+      },
+      "allies": 3,
+      "enemies": {
+        "number": 10,
+        "type": "soldier"
+      }
+    },
+    {
+      "coordinates": {
+        "x": 19,
+        "y": 49
+      },
+      "enemies": {
+        "number": 10,
+        "type": "soldier"
+      }
+    },
+    {
+      "coordinates": {
+        "x": 38,
+        "y": 21
+      },
+      "allies": 5,
+      "enemies": {
+        "number": 30,
+        "type": "soldier"
+      }
+    },
+    {
+      "coordinates": {
+        "y": 39,
+        "x": 10
+      },
+      "allies": 8,
+      "enemies": {
+        "type": "soldier",
+        "number": 30
+      }
+    },
+    {
+      "coordinates": {
+        "y": 38,
+        "x": 13
+      },
+      "enemies": {
+        "number": 15,
+        "type": "soldier"
+      }
+    },
+    {
+      "coordinates": {
+        "y": 15,
+        "x": 13
+      },
+      "enemies": {
+        "type": "soldier",
+        "number": 60
+      }
+    },
+    {
+      "coordinates": {
+        "x": 30,
+        "y": 19
+      },
+      "enemies": {
+        "type": "soldier",
+        "number": 40
+      }
+    },
+    {
+      "enemies": {
+        "type": "soldier",
+        "number": 20
+      },
+      "coordinates": {
+        "y": 11,
+        "x": 30
+      }
+    },
+    {
+      "enemies": {
+        "type": "soldier",
+        "number": 80
+      },
+      "allies": 11,
+      "coordinates": {
+        "y": 19,
+        "x": 15
+      }
+    },
+    {
+      "enemies": {
+        "type": "soldier",
+        "number": 10
+      },
+      "allies": 13,
+      "coordinates": {
+        "y": 15,
+        "x": 22
+      }
+    },
+    {
+      "enemies": {
+        "number": 10,
+        "type": "soldier"
+      },
+      "coordinates": {
+        "x": 10,
+        "y": 19
+      }
+    },
+    {
+      "coordinates": {
+        "y": 11,
+        "x": 94
+      },
+      "allies": 15,
+      "enemies": {
+        "number": 10,
+        "type": "soldier"
+      }
+    },
+    {
+      "coordinates": {
+        "y": 19,
+        "x": 10
+      },
+      "enemies": {
+        "type": "soldier",
+        "number": 30
+      }
+    },
+    {
+      "coordinates": {
+        "y": 18,
+        "x": 90
+      },
+      "allies": 16,
+      "enemies": {
+        "number": 30,
+        "type": "soldier"
+      }
+    },
+    {
+      "coordinates": {
+        "x": 80,
+        "y": 51
+      },
+      "allies": 5,
+      "enemies": {
+        "type": "soldier",
+        "number": 15
+      }
+    },
+    {
+      "coordinates": {
+        "x": 70,
+        "y": 91
+      },
+      "allies": 5,
+      "enemies": {
+        "number": 60,
+        "type": "soldier"
+      }
+    },
+    {
+      "coordinates": {
+        "x": 30,
+        "y": 11
+      },
+      "enemies": {
+        "number": 40,
+        "type": "soldier"
+      }
+    },
+    {
+      "coordinates": {
+        "x": 30,
+        "y": 95
+      },
+      "enemies": {
+        "number": 20,
+        "type": "mech"
+      }
+    },
+    {
+      "coordinates": {
+        "y": 89,
+        "x": 1
+      },
+      "allies": 8,
+      "enemies": {
+        "number": 80,
+        "type": "soldier"
+      }
+    },
+    {
+      "coordinates": {
+        "y": 11,
+        "x": 3
+      },
+      "enemies": {
+        "type": "soldier",
+        "number": 10
+      }
+    },
+    {
+      "coordinates": {
+        "y": 19,
+        "x": 54
+      },
+      "enemies": {
+        "type": "soldier",
+        "number": 10
+      }
+    },
+    {
+      "coordinates": {
+        "y": 38,
+        "x": 22
+      },
+      "enemies": {
+        "number": 10,
+        "type": "soldier"
+      }
+    },
+    {
+      "coordinates": {
+        "x": 3,
+        "y": 10
+      },
+      "allies": 10,
+      "enemies": {
+        "type": "soldier",
+        "number": 30
+      }
+    },
+    {
+      "enemies": {
+        "type": "soldier",
+        "number": 30
+      },
+      "coordinates": {
+        "y": 13,
+        "x": 43
+      }
+    },
+    {
+      "coordinates": {
+        "y": 13,
+        "x": 51
+      },
+      "allies": 10,
+      "enemies": {
+        "type": "soldier",
+        "number": 15
+      }
+    },
+    {
+      "enemies": {
+        "number": 60,
+        "type": "soldier"
+      },
+      "allies": 10,
+      "coordinates": {
+        "x": 91,
+        "y": 30
+      }
+    },
+    {
+      "enemies": {
+        "type": "soldier",
+        "number": 40
+      },
+      "coordinates": {
+        "x": 11,
+        "y": 30
+      }
+    },
+    {
+      "coordinates": {
+        "y": 15,
+        "x": 91
+      },
+      "enemies": {
+        "number": 20,
+        "type": "soldier"
+      }
+    },
+    {
+      "coordinates": {
+        "x": 51,
+        "y": 22
+      },
+      "allies": 10,
+      "enemies": {
+        "type": "soldier",
+        "number": 80
+      }
+    },
+    {
+      "enemies": {
+        "type": "mech",
+        "number": 10
+      },
+      "coordinates": {
+        "y": 10,
+        "x": 91
+      }
+    },
+    {
+      "coordinates": {
+        "y": 84,
+        "x": 11
+      },
+      "enemies": {
+        "number": 10,
+        "type": "soldier"
+      }
+    },
+    {
+      "coordinates": {
+        "y": 65,
+        "x": 91
+      },
+      "allies": 10,
+      "enemies": {
+        "type": "soldier",
+        "number": 10
+      }
+    },
+    {
+      "coordinates": {
+        "x": 81,
+        "y": 53
+      },
+      "allies": 3,
+      "enemies": {
+        "type": "mech",
+        "number": 30
+      }
+    },
+    {
+      "enemies": {
+        "number": 30,
+        "type": "soldier"
+      },
+      "allies": 4,
+      "coordinates": {
+        "x": 15,
+        "y": 70
+      }
+    },
+    {
+      "coordinates": {
+        "x": 19,
+        "y": 83
+      },
+      "allies": 4,
+      "enemies": {
+        "number": 15,
+        "type": "soldier"
+      }
+    },
+    {
+      "coordinates": {
+        "x": 11,
+        "y": 46
+      },
+      "enemies": {
+        "type": "soldier",
+        "number": 60
+      }
+    },
+    {
+      "enemies": {
+        "number": 40,
+        "type": "soldier"
+      },
+      "allies": 6,
+      "coordinates": {
+        "x": 59,
+        "y": 26
+      }
+    },
+    {
+      "coordinates": {
+        "y": 57,
+        "x": 98
+      },
+      "allies": 6,
+      "enemies": {
+        "type": "soldier",
+        "number": 20
+      }
+    },
+    {
+      "coordinates": {
+        "y": 58,
+        "x": 11
+      },
+      "enemies": {
+        "type": "mech",
+        "number": 80
+      }
+    },
+    {
+      "coordinates": {
+        "y": 39,
+        "x": 91
+      },
+      "enemies": {
+        "type": "mech",
+        "number": 10
+      }
+    },
+    {
+      "enemies": {
+        "number": 10,
+        "type": "mech"
+      },
+      "coordinates": {
+        "y": 37,
+        "x": 83
+      }
+    },
+    {
+      "coordinates": {
+        "x": 0,
+        "y": 11
+      },
+      "allies": 6,
+      "enemies": {
+        "number": 1,
+        "type": "mech"
+      }
+    }
+  ],
+  "protocols": [
+    "closest-enemies",
+    "prioritize-mech",
+    "avoid-crossfire"
+  ]
+}
