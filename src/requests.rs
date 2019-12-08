@@ -1,14 +1,14 @@
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 /// Scan Request.
-#[derive(Deserialize)]
+#[derive(Serialize, Deserialize)]
 pub struct Scan {
     pub scan: Vec<yvh::Scan>,
     pub protocols: Vec<ProtocolName>,
 }
 
 /// Protocol names that can be used in requests.
-#[derive(Deserialize)]
+#[derive(Serialize, Deserialize)]
 pub enum ProtocolName {
     #[serde(rename = "closest-enemies")]
     ClosestEnemies,

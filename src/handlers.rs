@@ -46,3 +46,53 @@ pub fn get_protocol_by_name(name: requests::ProtocolName) -> Box<dyn yvh::Protoc
         requests::ProtocolName::AvoidMech => Box::new(yvh::AvoidMech),
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use actix_web::dev::Service;
+    use actix_web::{http, test, web, App, Error};
+
+    #[actix_rt::test]
+    async fn test_handler_get_enemy() -> Result<(), Error> {
+        let app = App::new().route("/", web::post().to(get_enemy));
+        let mut app = test::init_service(app).await;
+
+        let req = test::TestRequest::post()
+            .uri("/")
+            .set_json(&requests::Scan {
+                scan: vec![
+                    yvh::Scan {
+                        enemies: yvh::Enemies {
+                            number: 10,
+                            kind: yvh::EnemyKind::Soldier,
+                        },
+                        coordinates: yvh::Coordinates { x: 0, y: 40 },
+                        allies: None,
+                    },
+                    yvh::Scan {
+                        enemies: yvh::Enemies {
+                            number: 1,
+                            kind: yvh::EnemyKind::Mech,
+                        },
+                        coordinates: yvh::Coordinates { x: 0, y: 80 },
+                        allies: Some(5),
+                    },
+                ],
+                protocols: vec![requests::ProtocolName::AvoidMech],
+            })
+            .to_request();
+        let resp = app.call(req).await.unwrap();
+
+        assert_eq!(resp.status(), http::StatusCode::OK);
+
+        let response_body = match resp.response().body().as_ref() {
+            Some(actix_web::body::Body::Bytes(bytes)) => bytes,
+            _ => panic!("Response error"),
+        };
+
+        assert_eq!(response_body, r##"{"x":0,"y":40}"##);
+
+        Ok(())
+    }
+}
