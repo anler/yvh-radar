@@ -77,7 +77,7 @@ impl Protocol for PrioritizeMech {
             let enemies_b = &b.scan().enemies;
 
             match (&enemies_a.kind, &enemies_b.kind) {
-                (EnemyKind::Mech, EnemyKind::Mech) => enemies_a.number.cmp(&enemies_b.number),
+                (EnemyKind::Mech, EnemyKind::Mech) => Ordering::Equal,
                 (EnemyKind::Mech, _) => Ordering::Less,
                 (_, EnemyKind::Mech) => Ordering::Greater,
                 _ => Ordering::Equal,
