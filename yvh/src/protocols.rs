@@ -1,17 +1,12 @@
-use super::Scan;
+use std::cmp::Ordering;
 
-/// Protocols to apply to a radar scan.
-///
-/// This list of protocols will always contain compatible protocols.
-pub struct Protocols {
-    protocols: Vec<Box<dyn Protocol>>,
-}
+use super::{AugmentedScan, EnemyKind};
 
 /// Protocol Interface.
 pub trait Protocol {
     /// Receives a list or radar scans and returns the objects
     /// conforming to the protocol rules.
-    fn apply(&self, scan: Vec<Scan>) -> Vec<Scan>;
+    fn apply(&self, scan: Vec<AugmentedScan>) -> Vec<AugmentedScan>;
 }
 
 /// Protocol that ignores enemies being to far away.
@@ -30,8 +25,10 @@ impl IgnoreOutOfRange {
 }
 
 impl Protocol for IgnoreOutOfRange {
-    fn apply(&self, scan: Vec<Scan>) -> Vec<Scan> {
-        unimplemented!()
+    fn apply(&self, scan: Vec<AugmentedScan>) -> Vec<AugmentedScan> {
+        scan.into_iter()
+            .filter(|scan| scan.distance() <= self.range)
+            .collect()
     }
 }
 
@@ -39,8 +36,9 @@ impl Protocol for IgnoreOutOfRange {
 pub struct ClosestEnemies;
 
 impl Protocol for ClosestEnemies {
-    fn apply(&self, scan: Vec<Scan>) -> Vec<Scan> {
-        unimplemented!()
+    fn apply(&self, mut scan: Vec<AugmentedScan>) -> Vec<AugmentedScan> {
+        scan.sort_by(|a, b| a.distance().cmp(&b.distance()));
+        scan
     }
 }
 
@@ -48,26 +46,44 @@ impl Protocol for ClosestEnemies {
 pub struct FurthestEnemies;
 
 impl Protocol for FurthestEnemies {
-    fn apply(&self, scan: Vec<Scan>) -> Vec<Scan> {
-        unimplemented!()
+    fn apply(&self, mut scan: Vec<AugmentedScan>) -> Vec<AugmentedScan> {
+        scan.sort_by(|a, b| b.distance().cmp(&a.distance()));
+        scan
     }
 }
 
-/// Protocol that prioritizes points with allies.
+/// Protocol that prioritizes points with more allies.
 pub struct AssistAllies;
 
 impl Protocol for AssistAllies {
-    fn apply(&self, scan: Vec<Scan>) -> Vec<Scan> {
-        unimplemented!()
+    fn apply(&self, mut scan: Vec<AugmentedScan>) -> Vec<AugmentedScan> {
+        scan.sort_by(|a, b| match (a.scan().allies, b.scan().allies) {
+            (Some(allies_a), Some(allies_b)) => allies_a.cmp(&allies_b),
+            (None, Some(_)) => Ordering::Greater,
+            (Some(_), None) => Ordering::Less,
+            _ => Ordering::Equal,
+        });
+        scan
     }
 }
 
-/// Protocol that prioritizes points with mech enemies.
+/// Protocol that prioritizes points with more mech enemies.
 pub struct PrioritizeMech;
 
 impl Protocol for PrioritizeMech {
-    fn apply(&self, scan: Vec<Scan>) -> Vec<Scan> {
-        unimplemented!()
+    fn apply(&self, mut scan: Vec<AugmentedScan>) -> Vec<AugmentedScan> {
+        scan.sort_by(|a, b| {
+            let enemies_a = &a.scan().enemies;
+            let enemies_b = &b.scan().enemies;
+
+            match (&enemies_a.kind, &enemies_b.kind) {
+                (EnemyKind::Mech, EnemyKind::Mech) => enemies_a.number.cmp(&enemies_b.number),
+                (EnemyKind::Mech, _) => Ordering::Less,
+                (_, EnemyKind::Mech) => Ordering::Greater,
+                _ => Ordering::Equal,
+            }
+        });
+        scan
     }
 }
 
@@ -75,7 +91,222 @@ impl Protocol for PrioritizeMech {
 pub struct AvoidMech;
 
 impl Protocol for AvoidMech {
-    fn apply(&self, scan: Vec<Scan>) -> Vec<Scan> {
-        unimplemented!()
+    fn apply(&self, scan: Vec<AugmentedScan>) -> Vec<AugmentedScan> {
+        scan.into_iter()
+            .filter(|scan| !scan.scan().enemies.is_mech())
+            .collect()
+    }
+}
+
+/// Protocol that avoids attacking enemies being attacked by allies.
+pub struct AvoidCrossfire;
+
+impl Protocol for AvoidCrossfire {
+    fn apply(&self, scan: Vec<AugmentedScan>) -> Vec<AugmentedScan> {
+        scan.into_iter()
+            .filter(|scan| scan.scan().allies.is_none())
+            .collect()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::*;
+
+    #[test]
+    fn test_ignore_out_of_range_protocol() {
+        let scan = vec![
+            AugmentedScan::from(Scan {
+                coordinates: Coordinates { x: 3, y: 3 },
+                enemies: Enemies {
+                    kind: EnemyKind::Soldier,
+                    number: 2,
+                },
+                allies: None,
+            }),
+            AugmentedScan::from(Scan {
+                coordinates: Coordinates { x: 5, y: 5 },
+                enemies: Enemies {
+                    kind: EnemyKind::Soldier,
+                    number: 2,
+                },
+                allies: None,
+            }),
+        ];
+        let protocol = IgnoreOutOfRange::new(5);
+
+        assert_eq!(1, protocol.apply(scan).len());
+    }
+
+    #[test]
+    fn test_closest_enemies_protocol() {
+        let scan = vec![
+            AugmentedScan::from(Scan {
+                coordinates: Coordinates { x: 5, y: 35 },
+                enemies: Enemies {
+                    kind: EnemyKind::Soldier,
+                    number: 10,
+                },
+                allies: None,
+            }),
+            AugmentedScan::from(Scan {
+                coordinates: Coordinates { x: 10, y: 30 },
+                enemies: Enemies {
+                    kind: EnemyKind::Soldier,
+                    number: 20,
+                },
+                allies: None,
+            }),
+        ];
+        let protocol = ClosestEnemies;
+        let distances = protocol
+            .apply(scan)
+            .into_iter()
+            .map(|scan| scan.distance())
+            .collect::<Vec<_>>();
+
+        assert_eq!(vec![31, 35], distances);
+    }
+
+    #[test]
+    fn test_furthest_enemies_protocol() {
+        let scan = vec![
+            AugmentedScan::from(Scan {
+                coordinates: Coordinates { x: 5, y: 35 },
+                enemies: Enemies {
+                    kind: EnemyKind::Soldier,
+                    number: 10,
+                },
+                allies: None,
+            }),
+            AugmentedScan::from(Scan {
+                coordinates: Coordinates { x: 10, y: 30 },
+                enemies: Enemies {
+                    kind: EnemyKind::Soldier,
+                    number: 20,
+                },
+                allies: None,
+            }),
+        ];
+        let protocol = FurthestEnemies;
+        let distances = protocol
+            .apply(scan)
+            .into_iter()
+            .map(|scan| scan.distance())
+            .collect::<Vec<_>>();
+
+        assert_eq!(vec![35, 31], distances);
+    }
+
+    #[test]
+    fn test_assist_allies_protocol() {
+        let scan = vec![
+            AugmentedScan::from(Scan {
+                coordinates: Coordinates { x: 5, y: 35 },
+                enemies: Enemies {
+                    kind: EnemyKind::Soldier,
+                    number: 10,
+                },
+                allies: Some(3),
+            }),
+            AugmentedScan::from(Scan {
+                coordinates: Coordinates { x: 10, y: 30 },
+                enemies: Enemies {
+                    kind: EnemyKind::Soldier,
+                    number: 20,
+                },
+                allies: None,
+            }),
+        ];
+        let protocol = AssistAllies;
+        let results = protocol.apply(scan);
+        let first = results.first().unwrap();
+
+        assert_eq!(5, first.scan().coordinates.x);
+        assert_eq!(35, first.scan().coordinates.y);
+    }
+
+    #[test]
+    fn test_prioritize_mech_protocol() {
+        let scan = vec![
+            AugmentedScan::from(Scan {
+                coordinates: Coordinates { x: 0, y: 40 },
+                enemies: Enemies {
+                    kind: EnemyKind::Soldier,
+                    number: 10,
+                },
+                allies: None,
+            }),
+            AugmentedScan::from(Scan {
+                coordinates: Coordinates { x: 0, y: 80 },
+                enemies: Enemies {
+                    kind: EnemyKind::Mech,
+                    number: 1,
+                },
+                allies: Some(5),
+            }),
+        ];
+        let protocol = PrioritizeMech;
+        let results = protocol.apply(scan);
+        let first = results.first().unwrap();
+
+        assert_eq!(0, first.scan().coordinates.x);
+        assert_eq!(80, first.scan().coordinates.y);
+    }
+
+    #[test]
+    fn test_avoid_mech_protocol() {
+        let scan = vec![
+            AugmentedScan::from(Scan {
+                coordinates: Coordinates { x: 0, y: 40 },
+                enemies: Enemies {
+                    kind: EnemyKind::Soldier,
+                    number: 10,
+                },
+                allies: None,
+            }),
+            AugmentedScan::from(Scan {
+                coordinates: Coordinates { x: 0, y: 80 },
+                enemies: Enemies {
+                    kind: EnemyKind::Mech,
+                    number: 1,
+                },
+                allies: Some(5),
+            }),
+        ];
+        let protocol = AvoidMech;
+        let results = protocol.apply(scan);
+        let first = results.first().unwrap();
+
+        assert_eq!(0, first.scan().coordinates.x);
+        assert_eq!(40, first.scan().coordinates.y);
+    }
+
+    #[test]
+    fn test_avoid_crossfire_protocol() {
+        let scan = vec![
+            AugmentedScan::from(Scan {
+                coordinates: Coordinates { x: 5, y: 35 },
+                enemies: Enemies {
+                    kind: EnemyKind::Soldier,
+                    number: 10,
+                },
+                allies: Some(3),
+            }),
+            AugmentedScan::from(Scan {
+                coordinates: Coordinates { x: 35, y: 5 },
+                enemies: Enemies {
+                    kind: EnemyKind::Soldier,
+                    number: 20,
+                },
+                allies: None,
+            }),
+        ];
+        let protocol = AvoidCrossfire;
+        let results = protocol.apply(scan);
+        let first = results.first().unwrap();
+
+        assert_eq!(35, first.scan().coordinates.x);
+        assert_eq!(5, first.scan().coordinates.y);
     }
 }

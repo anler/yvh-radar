@@ -1,5 +1,6 @@
 //! # YVH Attack Module
 
+mod distance;
 mod enemies;
 mod protocols;
 mod scan;
@@ -10,8 +11,6 @@ pub use scan::*;
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-
     #[test]
     fn test_something() {
         assert!(true)
