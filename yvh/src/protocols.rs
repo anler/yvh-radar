@@ -9,6 +9,31 @@ pub trait Protocol {
     fn apply(&self, scan: Vec<AugmentedScan>) -> Vec<AugmentedScan>;
 }
 
+/// A collection of combined protocols.
+pub struct Protocols {
+    protocols: Vec<Box<dyn Protocol>>,
+}
+
+impl<I> From<I> for Protocols
+where
+    I: Iterator<Item = Box<dyn Protocol>>,
+{
+    fn from(iterator: I) -> Self {
+        Self {
+            protocols: iterator.collect(),
+        }
+    }
+}
+
+impl Protocol for Protocols {
+    fn apply(&self, mut scan: Vec<AugmentedScan>) -> Vec<AugmentedScan> {
+        for protocol in &self.protocols {
+            scan = protocol.apply(scan)
+        }
+        scan
+    }
+}
+
 /// Protocol that ignores enemies being to far away.
 pub struct IgnoreOutOfRange {
     range: u32,
