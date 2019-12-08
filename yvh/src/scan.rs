@@ -1,6 +1,10 @@
+#[cfg(feature = "serde")]
+use serde::{Deserialize, Serialize};
+
 use super::{distance, Enemies};
 
 /// Coordinates of a radar scan object.
+#[cfg_attr(feature = "serde", derive(Deserialize, Serialize))]
 pub struct Coordinates {
     /// The X coordinate.
     pub x: i32,
@@ -10,6 +14,7 @@ pub struct Coordinates {
 
 /// Denotes a radar scan, which yields the enemies residing at a given
 /// coordinate.
+#[cfg_attr(feature = "serde", derive(Deserialize, Serialize))]
 pub struct Scan {
     /// Coordinates of the radar scan.
     pub coordinates: Coordinates,
