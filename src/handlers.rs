@@ -18,7 +18,8 @@ pub async fn get_enemy(request: web::Json<requests::Scan>, _req: HttpRequest) ->
 }
 
 fn extract_scan_request(request: requests::Scan) -> (Vec<yvh::AugmentedScan>, yvh::Protocols) {
-    let mut protocols: Vec<Box<dyn yvh::Protocol>> = Vec::with_capacity(request.protocols.len());
+    let mut protocols: Vec<Box<dyn yvh::Protocol>> =
+        Vec::with_capacity(request.protocols.len() + 1);
     let scan = request
         .scan
         .into_iter()
